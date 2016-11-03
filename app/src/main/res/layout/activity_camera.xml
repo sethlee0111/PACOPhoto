@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        />
+
+    <Button
+        android:id="@+id/button_capture"
+        android:text="Capture"
+        android:layout_height="184dp"
+        android:layout_width="33dp"
+        android:gravity="center_horizontal|fill_horizontal|center"
+        android:layout_gravity="left|center" />
+
+    <Button
+        android:id="@+id/button_retake"
+        android:text="Back"
+        android:layout_height="81dp"
+        android:layout_width="31dp"
+        android:layout_gravity="bottom|center" />
+
+</LinearLayout>
