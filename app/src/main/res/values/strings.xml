@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">PACOPhoto</string>
     <string name="title_activity_camera">CameraActivity</string>
+    <string name="earth">Earth</string>
+    <string name="moon">Moon</string>
+
+    <string-array name="image_ids">
+        <item>@string/earth</item>
+        <item>@string/moon</item>
+    </string-array>
 </resources>

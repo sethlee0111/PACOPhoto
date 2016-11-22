@@ -33,23 +33,29 @@ public class CameraActivity extends Activity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
+            Log.d("learnTag", "inside onPictureTaken");
             File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
             if (pictureFile == null){
-                Log.d("tag_name", "Error creating media file, check storage permissions: ");
+                Log.d("mytag", "Error creating media file, check storage permissions: ");
                 return;
             }
-
+            mPreviewState = K_STATE_FROZEN;
+            Log.d("mytag", getOutputMediaFileUri(MEDIA_TYPE_IMAGE) + "");
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
             } catch (FileNotFoundException e) {
-                Log.d("tag_name", "File not found: " + e.getMessage());
+                Log.d("mytag", "File not found: " + e.getMessage());
             } catch (IOException e) {
-                Log.d("tag_name", "Error accessing file: " + e.getMessage());
+                Log.d("mytag", "Error accessing file: " + e.getMessage());
             }
         }
     };
+    private final int K_STATE_FROZEN = 1;
+    private final int K_STATE_BUSY = 2;
+    private final int K_STATE_PREVIEW = 3;
+    private int mPreviewState = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,8 +73,18 @@ public class CameraActivity extends Activity {
                     public void onClick(View v) {
                         // get an image from the camera
                         Log.d("mytag", "Capture_onclick");
-                        mCamera.takePicture(null, null, mPicture);
                         //Log.d("mytag", "Capture_onclick done");
+                        switch(mPreviewState) {
+                            case K_STATE_FROZEN:
+                                mCamera.startPreview();
+                                mPreviewState = K_STATE_PREVIEW;
+                                break;
+
+                            default:
+                                mCamera.takePicture( null, null, mPicture);
+                                mPreviewState = K_STATE_BUSY;
+                        } // switch
+                        //shutterBtnConfig();
                     }
                 }
         );
@@ -100,16 +116,15 @@ public class CameraActivity extends Activity {
 
 
     /** Create a file Uri for saving an image or video */
-    private static Uri getOutputMediaFileUri(int type){
+    private Uri getOutputMediaFileUri(int type){
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
     /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
+    private File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "PacoApp");
+        File mediaStorageDir = new File(getFilesDir(), "PacoAppCache");
 
         // TODO store in internal storage
         if (! mediaStorageDir.exists()){
