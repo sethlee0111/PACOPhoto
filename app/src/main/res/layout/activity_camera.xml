@@ -12,19 +12,14 @@
         android:layout_weight="1"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_capture"
-        android:text="Capture"
-        android:layout_height="184dp"
-        android:layout_width="33dp"
-        android:gravity="center_horizontal|fill_horizontal|center"
-        android:layout_gravity="left|center" />
+        android:layout_width="73dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:src="@drawable/camera_onclick"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false" />
 
-    <Button
-        android:id="@+id/button_retake"
-        android:text="Back"
-        android:layout_height="81dp"
-        android:layout_width="31dp"
-        android:layout_gravity="bottom|center" />
 
 </LinearLayout>

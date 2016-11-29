@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -66,7 +67,7 @@ public class CameraActivity extends Activity {
 
         Log.d("mytag", "inside onCreate");
 
-        Button captureButton = (Button) findViewById(R.id.button_capture);
+        ImageButton captureButton = (ImageButton) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

@@ -7,50 +7,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sethlee on 11/17/16.
  */
 public class GridViewAdapter extends ArrayAdapter {
     private Context context;
-    private int layoutResourceId;
-    private ArrayList<ImageItem> data = new ArrayList();
+    private LayoutInflater inflater;
+    private int fileNum;
+    private List<String> imagePaths;
 
-    public GridViewAdapter(Context context, int layoutResourceId, ArrayList data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public GridViewAdapter(Context context, List<String> imagePaths) {
+        super(context, R.layout.grid_item_layout, imagePaths);
         this.context = context;
-        this.data = data;
+        this.imagePaths = imagePaths;
+
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        ViewHolder holder = null;
-
-        if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
-            holder = new ViewHolder();
-            holder.imageTitle = (TextView) row.findViewById(R.id.text);
-            holder.image = (ImageView) row.findViewById(R.id.image);
-            row.setTag(holder);
-        } else {
-            holder = (ViewHolder) row.getTag();
+        if (null == convertView) {
+            convertView = inflater.inflate(R.layout.galleryitem, parent, false);
         }
+            Picasso
+                    .with(context)
+                    .load(new File(imagePaths.get(position)))
+                    .fit() // will explain later
+                    .into((ImageView) convertView);
+            return convertView;
 
-        ImageItem item = data.get(position);
-        holder.imageTitle.setText(item.getTitle());
-        holder.image.setImageBitmap(item.getImage());
-        return row;
-    }
-
-    static class ViewHolder {
-        TextView imageTitle;
-        ImageView image;
     }
 }

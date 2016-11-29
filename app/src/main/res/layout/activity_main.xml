@@ -16,22 +16,33 @@
         android:text="Camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:id="@+id/camera_button"
         android:onClick="openCamera"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@+id/camera_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp" />
+
     <GridView
         android:id="@+id/pacogallery"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignParentTop="true"
         android:layout_weight="1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:numColumns="auto_fit" android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp" android:columnWidth="90dp"
-        android:stretchMode="columnWidth" android:gravity="center" />
+        android:stretchMode="columnWidth" android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/map" />
 
 </RelativeLayout>

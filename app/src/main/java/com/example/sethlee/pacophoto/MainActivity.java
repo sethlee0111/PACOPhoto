@@ -17,14 +17,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -34,153 +38,51 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     private int count;
     private Bitmap[] thumbnails;
     private String[] arrPath;
     //private ImageAdapter imageAdapter;
 
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("newtag", "in MainActivity onCreate");
-        /* Map fragment
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        GoogleMapOptions options = new GoogleMapOptions();
-        options.mapType(GoogleMap.MAP_TYPE_SATELLITE)
-                .compassEnabled(false)
-                .rotateGesturesEnabled(false)
-                .tiltGesturesEnabled(false);
-                */
+
     }
-/*
+
     @Override
-    public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney, Australia, and move the camera.
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
-    */
-    /*
-    public class ImageAdapter extends BaseAdapter {
-        private LayoutInflater mInflater;
 
-        public ImageAdapter() {
-            mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.galleryitem, null);
-                holder.imageview = (ImageView) convertView
-                        .findViewById(R.id.thumbImage);
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            holder.imageview.setId(position);
-
-            holder.imageview.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    int id = v.getId();
-                    Intent intent = new Intent(MainActivity.this,
-                            lastscreen.class);
-                    intent.setDataAndType(Uri.parse("file://" + arrPath[id]),
-                            "image/*");
-                    intent.putExtra("path", arrPath[id]);
-                    startActivity(intent);
-                }
-            });
-            holder.imageview.setImageBitmap(thumbnails[position]);
-            return convertView;
-        }
-    }
-    */
-
-    class ViewHolder {
-        ImageView imageview;
-    }
 
     public void openCamera(View view) {
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
     private GridView gridView;
+    private ListView listView;
     private GridViewAdapter gridAdapter;
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-
+        //View = (ListView) findViewById(R.id.list_view);
+        //listView.setAdapter(new GridViewAdapter(MainActivity.this, getListPaths(getFilesDir())));
         gridView = (GridView) findViewById(R.id.pacogallery);
-        gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, getData());
+        gridAdapter = new GridViewAdapter(this, getListPaths(getFilesDir()));
         gridView.setAdapter(gridAdapter);
-        /*
-        final String[] columns = { MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media._ID };
-        final String orderBy = MediaStore.Images.Media._ID;
-        Cursor imagecursor = managedQuery(Uri.parse(
-                "file:///data/data/com.example.sethlee.pacophoto/files/PacoAppCache/"), columns
-                , null, null, orderBy);
-        Log.d("mytag", "Internal" + MediaStore.Images.Media.INTERNAL_CONTENT_URI.toString() );
-        Log.d("mytag", "External" + MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString() );
-
-        int image_column_index = 4/*imagecursor.getColumnIndex(MediaStore.Images.Media._ID)*/;
-        /*this.count = imagecursor.getCount();
-        this.thumbnails = new Bitmap[this.count];
-        this.arrPath = new String[this.count];
-
-        for (int i = 0; i < this.count; i++) {
-            imagecursor.moveToPosition(i);
-            int id = imagecursor.getInt(image_column_index);
-            int dataColumnIndex = imagecursor
-                    .getColumnIndex(MediaStore.Images.Media.DATA);
-            thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
-                    getApplicationContext().getContentResolver(), id,
-                    MediaStore.Images.Thumbnails.MICRO_KIND, null);
-            arrPath[i] = imagecursor.getString(dataColumnIndex);
-        }
-        GridView imagegrid = (GridView) findViewById(R.id.pacogallery);
-
-        imageAdapter = new ImageAdapter();
-        imagegrid.setAdapter(imageAdapter);
-        //imagecursor.close();
-        */
     }
-
-    private ArrayList<ImageItem> getData() {
-        final ArrayList<ImageItem> imageItems = new ArrayList<>();
-        List<File> fileList = getListFiles(getFilesDir());
-        Iterator<File> fileIterable = fileList.iterator();
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        for(File eachFile : fileList) {
-            Log.d("mytag", fileList.size() + "");
-        }
-        for (int i = 0; i < 1; i++) { //TODO solve frame issue
-            Bitmap bitmap = BitmapFactory.decodeFile(fileIterable.next().getAbsolutePath(),bmOptions);
-            imageItems.add(new ImageItem(bitmap, "Rank#" + i));
-        }
-        return imageItems;
-    }
-
+    
     private List<File> getListFiles(File parentDir) {
         ArrayList<File> inFiles = new ArrayList<File>();
         File[] files = parentDir.listFiles();
@@ -194,5 +96,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return inFiles;
+    }
+
+    //private int fileNum;
+    private List<String> getListPaths(File parentDir) {
+        List<String> Paths = new ArrayList<>();
+        File[] files = parentDir.listFiles();
+        ArrayList<File> inFiles = new ArrayList<File>();
+        String directoryPath = parentDir.getPath();
+        for (File file : files) {
+            /* previous code including all the files in lower directory */
+            Log.d("file_tag",file.getPath());
+            if (file.isDirectory()) {
+                inFiles.addAll(getListFiles(file));
+            } else {
+                if(file.getName().endsWith(".jpg")){
+                    inFiles.add(file);
+                }
+            }
+        }
+        for(File files2 : inFiles) {
+            Paths.add(files2.getPath());
+            Log.d("jpg_file_tag",files2.getPath());
+        }
+        return Paths;
     }
 }
