@@ -3,6 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/PrimaryBlack"
     >
 
     <FrameLayout
@@ -19,7 +20,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/camera_onclick"
         android:adjustViewBounds="false"
+        android:scaleType="fitCenter"
         android:cropToPadding="false" />
-
 
 </LinearLayout>

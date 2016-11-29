@@ -10,39 +10,56 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/PrimaryBlack"
     tools:context="com.example.sethlee.pacophoto.MainActivity">
 
-    <Button
-        android:text="Camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
         android:id="@+id/camera_button"
         android:onClick="openCamera"
+        android:layout_below="@+id/map"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/map"
-        tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_above="@+id/camera_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camera_offclick"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView" />
 
     <GridView
         android:id="@+id/pacogallery"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="230dp"
         android:layout_weight="1"
         android:numColumns="auto_fit" android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp" android:columnWidth="90dp"
+        android:layout_marginBottom="10dp"
         android:stretchMode="columnWidth" android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/map" />
+        android:layout_alignParentStart="true" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_below="@+id/pacogallery"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/rectangle"
+        android:layout_below="@+id/pacogallery"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="74dp" />
 
 </RelativeLayout>

@@ -23,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -61,9 +62,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng austin = new LatLng(30.2672, -97.7431);
+        mMap.addMarker(new MarkerOptions().position(austin).title("Austin"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(austin, 14));
     }
 
 
@@ -72,7 +73,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
     private GridView gridView;
-    private ListView listView;
     private GridViewAdapter gridAdapter;
     public void onResume() {
         super.onResume();  // Always call the superclass method first
@@ -82,7 +82,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         gridAdapter = new GridViewAdapter(this, getListPaths(getFilesDir()));
         gridView.setAdapter(gridAdapter);
     }
-    
+
     private List<File> getListFiles(File parentDir) {
         ArrayList<File> inFiles = new ArrayList<File>();
         File[] files = parentDir.listFiles();
